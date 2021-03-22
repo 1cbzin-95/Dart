@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 void main(){
   runApp(MaterialApp(
@@ -16,7 +17,40 @@ class _HomeState extends State<Home> {
   List _toDoList =[];
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+    appBar: AppBar(
+      title: Text("Lista de Tarefas"),
+      backgroundColor: Colors.blueAccent,
+      centerTitle: true,
+    ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    child:TextField(
+                      decoration: InputDecoration(
+                          labelText: "Nova Terefa",
+                          labelStyle: TextStyle(color: Colors.blueAccent)
+                      ),
+                    ),
+                ),
+                RaisedButton(
+                  color: Colors.blueAccent,
+                  child: Text("add"), textColor: Colors.white, onPressed: (){}
+                )
+              ],
+            ),
+          )
+
+        ],
+      ),
+
+
+
+    );
   }
   Future<File> _getFile()async{
     final directory = await getApplicationDocumentsDirectory();
