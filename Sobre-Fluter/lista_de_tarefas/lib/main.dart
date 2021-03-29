@@ -16,6 +16,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final toDoController= TextEditingController();
   List _toDoList =[];
+
+
+  @override
+  void initState() {
+    super.initState();
+    _readData().then((data){
+      setState(() {
+        _toDoList = jsonDecode(data);
+      });
+    });
+  }
+
   void _addToDo(){
     setState(() {
       Map<String,dynamic> newToDo=Map();
@@ -23,6 +35,7 @@ class _HomeState extends State<Home> {
       toDoController.text = "";
       newToDo["ok"] = false;
       _toDoList.add(newToDo);
+      _saveData();
     });
   }
   @override
@@ -67,6 +80,7 @@ class _HomeState extends State<Home> {
                     onChanged: (c){
                       setState(() {
                         _toDoList[index]["ok"]=c;
+                        _saveData();
                       });
                     },
                   );
