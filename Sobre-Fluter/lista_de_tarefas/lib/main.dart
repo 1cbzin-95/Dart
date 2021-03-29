@@ -14,7 +14,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final toDoController= TextEditingController();
   List _toDoList =[];
+  void _addToDo(){
+    setState(() {
+      Map<String,dynamic> newToDo=Map();
+      newToDo["title"] = toDoController.text;
+      toDoController.text = "";
+      newToDo["ok"] = false;
+      _toDoList.add(newToDo);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +41,7 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Expanded(
                     child:TextField(
+                      controller: toDoController,
                       decoration: InputDecoration(
                           labelText: "Nova Terefa",
                           labelStyle: TextStyle(color: Colors.blueAccent)
@@ -39,17 +50,30 @@ class _HomeState extends State<Home> {
                 ),
                 RaisedButton(
                   color: Colors.blueAccent,
-                  child: Text("add"), textColor: Colors.white, onPressed: (){}
-                )
+                  child: Text("add"), textColor: Colors.white, onPressed: _addToDo
+                ),
               ],
             ),
-          )
-
+          ),
+          Expanded(
+            child: ListView.builder(
+                padding: EdgeInsets.only(top: 10.0),
+                itemCount: _toDoList.length,
+                itemBuilder:(context,index){
+                  return CheckboxListTile(
+                    title: Text(_toDoList[index]["title"]),
+                    value: _toDoList[index]['ok'],
+                    secondary: CircleAvatar(child: Icon(_toDoList[index]['ok'] ? Icons.check:Icons.error),),
+                    onChanged: (c){
+                      setState(() {
+                        _toDoList[index]["ok"]=c;
+                      });
+                    },
+                  );
+                }),
+          ),
         ],
       ),
-
-
-
     );
   }
   Future<File> _getFile()async{
@@ -71,13 +95,5 @@ class _HomeState extends State<Home> {
   }
 }
 /* aula 4 */
-
-
-
-
-
-
-
-
 
 /* path_provider: ^1.1.0 -> bibliotec,plugin para nos ajudar no desenvolvimento*/
